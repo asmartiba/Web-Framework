@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import {Patronen, Concat} from './Patronen';
+
 
 interface Dna {
   letter: string;
@@ -10,19 +12,13 @@ interface NucleotideButtonsProps {
   addNucleotide: (letter: string) => void;
 }
 
-const NucleotideButtons: React.FC<NucleotideButtonsProps> = ({ addNucleotide }) => {
-  return (
-    <div style={{ display: 'flex' }}>
-      <button style={{ backgroundColor: 'red', width: 50, height: 50 }} onClick={() => addNucleotide('T')}>T</button>
-      <button style={{ backgroundColor: 'green', width: 50, height: 50 }} onClick={() => addNucleotide('A')}>A</button>
-      <button style={{ backgroundColor: 'purple', width: 50, height: 50 }} onClick={() => addNucleotide('C')}>C</button>
-      <button style={{ backgroundColor: 'yellow', width: 50, height: 50 }} onClick={() => addNucleotide('G')}>G</button>
-    </div>
-  );
-};
+interface DnaSequenceProps {
+  sequence: Dna[];
+  onSwap: (index: number) => void;
+}
 
 
-const DnaSequence: React.FC<{ sequence: Dna[], onSwap: (index: number) => void }> = ({ sequence, onSwap }) => {
+const DnaSequence: React.FC<DnaSequenceProps> = ({ sequence, onSwap }) => {
   const getColorForLetter = (letter: string): string => {
     switch (letter) {
       case 'A':
@@ -30,7 +26,7 @@ const DnaSequence: React.FC<{ sequence: Dna[], onSwap: (index: number) => void }
       case 'T':
         return 'red';
       case 'C':
-        return 'purple';
+        return 'purple';  
       case 'G':
         return 'yellow';
       default:
@@ -55,10 +51,21 @@ const DnaSequence: React.FC<{ sequence: Dna[], onSwap: (index: number) => void }
   );
 };
 
+const NucleotideButtons: React.FC<NucleotideButtonsProps> = ({ addNucleotide }) => {
+  return (
+    <div style={{ display: 'flex' }}>
+      <button style={{ backgroundColor: 'red', width: 50, height: 50 }} onClick={() => addNucleotide('T')}>T</button>
+      <button style={{ backgroundColor: 'green', width: 50, height: 50 }} onClick={() => addNucleotide('A')}>A</button>
+      <button style={{ backgroundColor: 'purple', width: 50, height: 50 }} onClick={() => addNucleotide('C')}>C</button>
+      <button style={{ backgroundColor: 'yellow', width: 50, height: 50 }} onClick={() => addNucleotide('G')}>G</button>
+    </div>
+  );
+};
+
 
 function App() {
   const [sequence, setSequence] = useState<Dna[]>([]);
-  const [randomSequenceCount, setRandomSequenceCount] = useState<number>(0);
+  const [randomSequenceCount, setRandomSequenceCount] = useState<number>(10);
 
   const addNucleotide = (letter: string) => {
     let match = '';
@@ -111,6 +118,8 @@ function App() {
         </div>
         <DnaSequence sequence={sequence} onSwap={handleSwap} />
         <NucleotideButtons addNucleotide={addNucleotide} />
+        {/* <Patronen/>
+        <Concat/> */}
       </header>
     </div>
   );
